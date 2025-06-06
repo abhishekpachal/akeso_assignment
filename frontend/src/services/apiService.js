@@ -10,6 +10,12 @@ const apiService = {
         Authorization: token ? `Bearer ${token}` : "",
       },
     });
+    if (result.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/";
+      return;
+    }
     return result;
   },
 
@@ -23,6 +29,12 @@ const apiService = {
       },
       body: JSON.stringify(data),
     });
+    if (result.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/";
+      return;
+    }
     return result;
   },
 };

@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { getMyTasks } from "@/features/taskSlice";
+import { deleteTask, getMyTasks } from "@/features/taskSlice";
 import { formatDate, formatDateApi } from "@/lib/utils";
 import { Label } from "@radix-ui/react-label";
 import {
@@ -26,6 +26,8 @@ import {
   CalendarSyncIcon,
   UserCircleIcon,
   CalendarIcon,
+  EditIcon,
+  TrashIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -38,6 +40,7 @@ import "react-date-range/dist/styles.css"; // main style
 import "react-date-range/dist/theme/default.css"; // theme style
 
 import { hideLoader, showLoader } from "@/features/loaderSlice";
+import Toast from "@/lib/Toast";
 
 export default function DashboardPage() {
   const [priorities, setPriorities] = useState(["high", "medium", "low"]);
@@ -59,13 +62,7 @@ export default function DashboardPage() {
     range[0].startDate,
     "LLL dd, yyyy"
   )} - ${format(range[0].endDate, "LLL dd, yyyy")}`;
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: "selection",
-    },
-  ]);
+
   const dispatch = useDispatch();
   const { myTasks, loading, error } = useSelector((state) => state.task);
   const initRef = useRef(false);
@@ -96,6 +93,12 @@ export default function DashboardPage() {
     }
   }, [loading]);
 
+  useEffect(() => {
+    if (error) {
+      Toast.error(error);
+    }
+  }, [error]);
+
   const handlePriorityChange = (priority) => {
     setPriorities((prev) =>
       prev.includes(priority)
@@ -110,6 +113,31 @@ export default function DashboardPage() {
         ? prev.filter((s) => s !== status)
         : [...prev, status]
     );
+  };
+
+  const taskDelete = async (taskId) => {
+    const result = await dispatch(deleteTask(taskId));
+    if (deleteTask.fulfilled.match(result)) {
+      if (result.payload.success) {
+        Toast.success(result.payload.message || "Task deleted successfully");
+        const filterDueDateStart = formatDateApi(
+          range[0].startDate,
+          true,
+          false
+        );
+        const filterDueDateEnd = formatDateApi(range[0].endDate, false, true);
+        dispatch(
+          getMyTasks({
+            filterPriority: priorities,
+            filterStatus: taskStatus,
+            filterDueDateStart,
+            filterDueDateEnd,
+          })
+        );
+      }
+    } else {
+      Toast.error("An error occurred while deleting the task");
+    }
   };
 
   return (
@@ -243,18 +271,29 @@ export default function DashboardPage() {
                   )}
                 </div>
                 <h2 className="text-xl text-gray-800 font-medium mt-2 md:mt-0">
-                  {task.title} sample task detail
+                  {task.title}
                 </h2>
               </div>
-
-              <Link
-                className={
-                  "bg-gray-700 px-3 py-2 rounded text-white text-sm md:block hidden"
-                }
-                href={`/t/${task.id}/edit`}
-              >
-                View / Edit
-              </Link>
+              <div className="flex gap-2">
+                <div className="hidden md:block">
+                  <div
+                    className="flex gap-1 bg-red-700 px-3 py-2 rounded text-white text-sm cursor-pointer"
+                    onClick={() => taskDelete(task.id)}
+                  >
+                    <TrashIcon className="h-4 w-4" /> <span>Delete</span>
+                  </div>
+                </div>
+                <Link
+                  className={
+                    "bg-gray-700 px-5 py-2 rounded text-white text-sm md:block hidden"
+                  }
+                  href={`/t/${task.id}/details`}
+                >
+                  <div className="flex items-center gap-1">
+                    <EditIcon className="h-4 w-4" /> <span>Edit</span>
+                  </div>
+                </Link>
+              </div>
             </div>
             <div className="grid grid-cols-12">
               <div className="col-span-8 md:col-span-2 flex gap-3 mt-2 items-center">
@@ -312,14 +351,19 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
-            <div className="col-span-8 md:col-span-12 pb-4 text-right mt-4 md:hidden sm:block">
-              <Link
-                className={
-                  "bg-gray-700 px-3 py-2 rounded text-white text-sm md:hidden sm:inline"
-                }
-                href={`/t/${task.id}/edit`}
+            <div className="col-span-8 md:col-span-12 pb-4 mt-4 md:hidden sm:block flex gap-2 items-center justify-end md:hidden sm:inline">
+              <div
+                variant="outline"
+                className="bg-red-700 py-2 px-3 text-white hover:bg-red-600 rounded text-sm"
+                onClick={() => taskDelete(task.id)}
               >
-                View / Edit
+                Delete
+              </div>
+              <Link
+                className={"bg-gray-700 px-6 py-2 rounded text-white text-sm"}
+                href={`/t/${task.id}/details`}
+              >
+                Edit
               </Link>
             </div>
           </Card>

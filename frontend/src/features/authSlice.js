@@ -14,6 +14,10 @@ export const loginUser = createAsyncThunk(
 
       // Save JWT to localStorage
       localStorage.setItem("token", data.token);
+      document.cookie = `token=${data.token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }; Secure; SameSite=Lax`;
+
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -39,9 +43,20 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const getUsers = createAsyncThunk("auth/users", async (_, thunkAPI) => {
+  try {
+    const response = await apiService.get("/auth/users");
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Failed to fetch users");
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
 export const loadUserFromStorage = createAsyncThunk(
   "auth/loadUserFromStorage",
-    async (_, thunkAPI) => {
+  async (_, thunkAPI) => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
 
@@ -57,6 +72,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
+    userList: [],
     loading: false,
     registrationDone: false,
     error: null,
@@ -97,9 +113,19 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(getUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userList = action.payload.users;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(loadUserFromStorage.fulfilled, (state, action) => {
-        console.log("Loaded user from storage:", action.payload.user);
-        
         state.user = action.payload.user;
       });
   },

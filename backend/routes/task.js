@@ -106,7 +106,7 @@ router.post("/update", authMiddleware, async (req, res) => {
       await tx
         .update(tasks)
         .set({ [key]: value })
-        .where(eq(tasks.id, taskId), eq(tasks.user_id, user_id))
+        .where(and(eq(tasks.id, taskId), eq(tasks.user_id, user_id)))
         .execute();
       await tx.insert(task_history).values({
         task_id: taskId,
@@ -119,7 +119,11 @@ router.post("/update", authMiddleware, async (req, res) => {
       });
     })
       .then(() => {
-        res.json({ success: true, message: "Task updated successfully" });
+        res.json({
+          success: true,
+          key: key,
+          message: "Task updated successfully",
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -265,11 +269,25 @@ router.get("/details/:taskId", authMiddleware, async (req, res) => {
   const user = req.user;
   const userId = user.userId;
   const taskId = parseInt(req.params.taskId, 10);
-
+  const assignedUser = alias(users, "assigned_user");
+  const createdByUser = alias(users, "created_by");
   try {
     const taskDetails = await db
-      .select()
+      .select({
+        id: tasks.id,
+        creator_id: tasks.user_id,
+        title: tasks.title,
+        description: tasks.description,
+        priority: tasks.priority,
+        status: tasks.status,
+        due_date: tasks.due_date,
+        created_at: tasks.created_at,
+        created_by: createdByUser.username,
+        assigned_user: assignedUser.username,
+      })
       .from(tasks)
+      .leftJoin(assignedUser, eq(tasks.assigned_to, assignedUser.id))
+      .leftJoin(createdByUser, eq(tasks.user_id, createdByUser.id))
       .where(
         and(
           eq(tasks.id, taskId),
@@ -282,7 +300,12 @@ router.get("/details/:taskId", authMiddleware, async (req, res) => {
     if (taskDetails.length === 0) {
       return res.status(400).json({ message: "Task not found" });
     }
-
+    if (taskDetails[0].creator_id == userId) {
+      taskDetails[0].can_edit = true;
+    } else {
+      taskDetails[0].can_edit = false;
+    }
+    delete taskDetails[0].creator_id;
     res.json({ success: true, task: taskDetails[0] });
   } catch (error) {
     console.error(error);
@@ -296,7 +319,7 @@ router.post("/delete", authMiddleware, async (req, res) => {
   const { taskId } = req.body;
 
   if (!taskId) {
-    return res.status(400).json({ message: "Task ID is required" });
+    return res.status(400).json({ message: "Invalid request" });
   }
 
   try {

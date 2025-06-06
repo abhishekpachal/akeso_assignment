@@ -15,20 +15,21 @@ export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState("abhishek.pachal@gmail.com");
   const [password, setPassword] = useState("123456");
+  const [userLoaded, setUserLoaded] = useState(false);
   const { user, loading, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const initRef = useRef(false);
   useEffect(() => {
     if (initRef.current) return;
     initRef.current = true;
-    // dispatch(loadUserFromStorage());
+    dispatch(loadUserFromStorage()).finally(() => setUserLoaded(true));
   }, [dispatch]);
 
   useEffect(() => {
-    if (user) {
+    if (userLoaded && user) {
       router.push("/dashboard");
     }
-  }, [user, router]);
+  }, [user, userLoaded]);
 
   useEffect(() => {
     if (loading) {

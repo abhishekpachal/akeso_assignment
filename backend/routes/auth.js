@@ -1,23 +1,20 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const { eq } = require("drizzle-orm");
+const { eq, ne, and } = require("drizzle-orm");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { db } = require("../drizzle/db");
 const { users } = require("../drizzle/schema");
 const authMiddleware = require("../middleware/authMiddleware");
 
-
 // Register
 router.post("/signup", async (req, res) => {
   try {
     if (!req.body.email || !req.body.password || !req.body.name) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Email, password, and name are required",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Email, password, and name are required",
+      });
     }
     const { email, password, name } = req.body;
     const result = await db
@@ -49,9 +46,9 @@ router.post("/signin", async (req, res) => {
         .status(400)
         .json({ success: false, message: "Email and password are required" });
     }
-  
+
     const { email, password } = req.body;
-    
+
     const result = await db
       .select()
       .from(users)
@@ -59,7 +56,6 @@ router.post("/signin", async (req, res) => {
       .limit(1);
 
     const user = result[0];
-
 
     if (!user)
       return res
@@ -72,9 +68,13 @@ router.post("/signin", async (req, res) => {
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
 
-    const token = jwt.sign({ userId: user.id, name: user.username }, process.env.JWT_SECRET, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { userId: user.id, name: user.username },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
     res.json({ success: true, token: token, user: { name: user.username } });
   } catch (error) {
     console.error(error);
@@ -84,10 +84,14 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-
 router.get("/users", authMiddleware, async (req, res) => {
   try {
-    const result = await db.select({ id: users.id, name: users.username }).from(users);
+    const user = req.user;
+    const userId = user.userId;
+    const result = await db
+      .select({ id: users.id, name: users.username })
+      .from(users)
+      .where(ne(users.id, userId));
     res.json({ success: true, users: result });
   } catch (error) {
     console.error(error);
