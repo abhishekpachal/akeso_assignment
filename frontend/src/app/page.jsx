@@ -1,21 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { loadUserFromStorage, loginUser } from "@/features/authSlice";
+import { useRouter } from "next/navigation";
+import Toast from "@/lib/Toast";
+import { hideLoader, showLoader } from "@/features/loaderSlice";
 
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
+  const [email, setEmail] = useState("abhishek.pachal@gmail.com");
+  const [password, setPassword] = useState("123456");
+  const { user, loading, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const initRef = useRef(false);
+  useEffect(() => {
+    if (initRef.current) return;
+    initRef.current = true;
+    // dispatch(loadUserFromStorage());
+  }, [dispatch]);
 
-  function handleSubmit(e) {
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
+
+  useEffect(() => {
+    if (loading) {
+      dispatch(showLoader());
+    } else {
+      dispatch(hideLoader());
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (error) {
+      Toast.error(error);
+    }
+  }, [error]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here (e.g., call your API)
-    console.log("Email:", email);
-    console.log("Password:", password);
-  }
+    dispatch(loginUser({ email, password }));
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-200 p-4">

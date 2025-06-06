@@ -2,10 +2,11 @@ const express = require("express");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
-const { eq, and, or, gte, lte, desc } = require("drizzle-orm");
+const { eq, and, or, gte, lte, desc, inArray, asc } = require("drizzle-orm");
 const { db } = require("../drizzle/db");
-const { task_history, tasks } = require("../drizzle/schema");
+const { task_history, tasks, users } = require("../drizzle/schema");
 const { route } = require("./auth");
+const { alias } = require("drizzle-orm/gel-core");
 
 router.post("/create", authMiddleware, async (req, res) => {
   try {
@@ -142,16 +143,45 @@ router.post("/mytasks", authMiddleware, async (req, res) => {
       filterDueDateStart,
       filterDueDateEnd,
     } = req.body;
-
+    if (!filterPriority || !Array.isArray(filterPriority)) {
+      return res.status(400).json({ message: "Invalid priority filter" });
+    }
+    if (!filterStatus || !Array.isArray(filterStatus)) {
+      return res.status(400).json({ message: "Invalid status filter" });
+    }
+    const assignedUser = alias(users, "assigned_user");
+    const createdByUser = alias(users, "created_by");
     const taskList = await db
-      .select()
+      .select({
+        id: tasks.id,
+        title: tasks.title,
+        description: tasks.description,
+        priority: tasks.priority,
+        status: tasks.status,
+        due_date: tasks.due_date,
+        created_at: tasks.created_at,
+        created_by: createdByUser.username,
+        assigned_user: assignedUser.username,
+      })
       .from(tasks)
+      .leftJoin(createdByUser, eq(tasks.user_id, createdByUser.id))
+      .leftJoin(assignedUser, eq(tasks.assigned_to, assignedUser.id))
       .where(
         and(
-          or(eq(tasks.user_id, userId), eq(tasks.assigned_to, userId)),
+          eq(tasks.user_id, userId),
           eq(tasks.deleted, 0),
-          filterPriority ? eq(tasks.priority, filterPriority) : true,
-          filterStatus ? eq(tasks.status, filterStatus) : true,
+          inArray(
+            tasks.priority,
+            filterPriority.length > 0
+              ? filterPriority
+              : ["low", "medium", "high"]
+          ),
+          inArray(
+            tasks.status,
+            filterStatus.length > 0
+              ? filterStatus
+              : ["todo", "in_progress", "done"]
+          ),
           filterDueDateStart
             ? gte(tasks.due_date, new Date(filterDueDateStart))
             : true,
@@ -160,7 +190,8 @@ router.post("/mytasks", authMiddleware, async (req, res) => {
             : true
         )
       )
-      .orderBy(desc(tasks.created_at));
+      .orderBy(asc(tasks.due_date), desc(tasks.created_at));
+
     res.json({ success: true, tasks: taskList });
   } catch (error) {
     console.error(error);
@@ -173,16 +204,46 @@ router.post("/assigned", authMiddleware, async (req, res) => {
   const userId = user.userId;
   const { filterPriority, filterStatus, filterDueDateStart, filterDueDateEnd } =
     req.body;
+  if (!filterPriority || !Array.isArray(filterPriority)) {
+    return res.status(400).json({ message: "Invalid priority filter" });
+  }
+  if (!filterStatus || !Array.isArray(filterStatus)) {
+    return res.status(400).json({ message: "Invalid status filter" });
+  }
   try {
+    const assignedUser = alias(users, "assigned_user");
+    const createdByUser = alias(users, "created_by");
     const assignedTasks = await db
-      .select()
+      .select({
+        id: tasks.id,
+        title: tasks.title,
+        description: tasks.description,
+        priority: tasks.priority,
+        status: tasks.status,
+        due_date: tasks.due_date,
+        created_at: tasks.created_at,
+        created_by: createdByUser.username,
+        assigned_user: assignedUser.username,
+      })
       .from(tasks)
+      .leftJoin(createdByUser, eq(tasks.user_id, createdByUser.id))
+      .leftJoin(assignedUser, eq(tasks.assigned_to, assignedUser.id))
       .where(
         and(
           eq(tasks.assigned_to, userId),
           eq(tasks.deleted, 0),
-          filterPriority ? eq(tasks.priority, filterPriority) : true,
-          filterStatus ? eq(tasks.status, filterStatus) : true,
+          inArray(
+            tasks.priority,
+            filterPriority.length > 0
+              ? filterPriority
+              : ["low", "medium", "high"]
+          ),
+          inArray(
+            tasks.status,
+            filterStatus.length > 0
+              ? filterStatus
+              : ["todo", "in_progress", "done"]
+          ),
           filterDueDateStart
             ? gte(tasks.due_date, new Date(filterDueDateStart))
             : true,
@@ -191,7 +252,7 @@ router.post("/assigned", authMiddleware, async (req, res) => {
             : true
         )
       )
-      .orderBy(desc(tasks.created_at));
+      .orderBy(asc(tasks.due_date), desc(tasks.created_at));
 
     res.json({ success: true, tasks: assignedTasks });
   } catch (error) {

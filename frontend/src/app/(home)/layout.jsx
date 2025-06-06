@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   Sheet,
@@ -15,24 +15,39 @@ import {
 import { DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { loadUserFromStorage, logout } from "@/features/authSlice";
+import { PowerIcon } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
-    const router = useRouter();
-    const pathname=usePathname();
-  const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const dispatch = useDispatch();
+  const [userLoaded, setUserLoaded] = useState(false);
+  const initRef = useRef(false);
+  const { user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (initRef.current) return;
+    initRef.current = true;
+    dispatch(loadUserFromStorage()).finally(() => {
+      setUserLoaded(true);
+    });
+  }, [dispatch]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) router.push("/login");
-    else setIsMounted(true);
-  }, [router]);
+    if (userLoaded && !user) {
+      router.push("/");
+    }
+  }, [user, userLoaded, router]);
 
-  if (!isMounted) return null;
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   const navLinks = [
     { href: "/dashboard", label: "My Tasks" },
     { href: "/assigned", label: "Received Tasks" },
-    { href: "/create", label: "Create Task" }
+    { href: "/create", label: "Create Task" },
   ];
 
   const SidebarContent = () => (
@@ -48,33 +63,36 @@ export default function DashboardLayout({ children }) {
           {label}
         </Link>
       ))}
-      <div className="mt-auto">
-        <div className="flex items-center space-x-3">
-          <Avatar className="w-10 h-10">
-            <AvatarFallback className="bg-pink-500 text-white">
-              {"AP"}
-            </AvatarFallback>
-          </Avatar>
-          <span className="text-gray-900 text-white">Abhishek Pachal</span>
+      {user && (
+        <div className="mt-auto">
+          <div className="flex items-center space-x-3">
+            <Avatar className="w-10 h-10">
+              <AvatarFallback className="bg-pink-500 text-white">
+                {user.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-gray-900 text-white">{user.name}</span>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="text-left text-red-400 cursor-pointer py-2 rounded-md transition-colors flex items-center ml-0 mt-4"
+          >
+            <PowerIcon className="inline mr-2" />
+            Logout
+          </button>
         </div>
-        <button
-          onClick={() => {
-            localStorage.removeItem("token");
-            router.push("/");
-          }}
-          className="text-left text-red-400 hover:bg-red-600 py-2 rounded-md transition-colors"
-        >
-          Logout
-        </button>
-      </div>
+      )}
     </nav>
   );
 
   return (
     <div className="min-h-screen flex bg-gray-50 text-gray-900">
       {/* Sidebar for desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-gray-800 border-r border-gray-700 shadow-lg text-gray-200">
-        <div className="flex h-16 items-center px-6 border-b border-gray-700">
+      <aside className="hidden md:flex flex-col w-64 bg-gray-800 border-r border-gray-700 shadow-lg text-gray-200 fixed h-full">
+        <Link
+          href="/dashboard"
+          className="flex h-16 items-center px-6 border-b border-gray-700 cursor-pointer"
+        >
           <Image
             src="/logo.svg"
             alt="TASKY Logo"
@@ -83,7 +101,7 @@ export default function DashboardLayout({ children }) {
             priority
           />
           <span className="ml-3 text-2xl font-bold text-pink-600">TASKY</span>
-        </div>
+        </Link>
         <SidebarContent />
       </aside>
 
@@ -109,7 +127,7 @@ export default function DashboardLayout({ children }) {
           side="left"
           className="w-64 p-0 bg-gray-800 text-gray-200"
         >
-          <DialogTitle ></DialogTitle>
+          <DialogTitle></DialogTitle>
 
           <div className="flex items-center px-6 py-4 border-b border-gray-700">
             <Image
@@ -127,7 +145,9 @@ export default function DashboardLayout({ children }) {
       </Sheet>
 
       {/* Main content area */}
-      <main className="flex-1 p-6 bg-white overflow-auto">{children}</main>
+      <main className="flex-1 p-6 bg-white overflow-auto md:ml-64">
+        {children}
+      </main>
     </div>
   );
 }
