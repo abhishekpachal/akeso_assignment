@@ -31,3 +31,27 @@ Once everything is done check if backend server is running by visiting the follo
 	`http://localhost:5000/`
 
 This will show response like "Welcome to the Task Management API"
+                                
+<br><br>
+
+**DB INDEXING (Optional)**
+
+Create index as follows for better  data retrieval
+
+CREATE UNIQUE INDEX idx_users_email ON users (email);
+
+CREATE INDEX idx_users_id ON users (id);
+
+CREATE INDEX idx_tasks_user_filtering_ordering
+ON tasks (
+  user_id,
+  deleted,
+  priority,
+  status,
+  due_date,
+  created_at DESC
+);
+
+CREATE INDEX idx_tasks_id_user_id ON tasks (id, user_id);
+
+

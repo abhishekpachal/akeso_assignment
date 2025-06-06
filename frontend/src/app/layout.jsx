@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "@/store";
 import { ToastContainer } from "react-toastify";
 import Loader from "@/lib/Loader";
+import { GlobalWebSocketProvider } from "./providers";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -26,9 +27,11 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${roboto.variable} ${lato.variable} antialiased`}>
         <Provider store={store}>
-          {children}
-          <ToastContainer theme="dark" />
-          <Loader />
+          <GlobalWebSocketProvider>
+            {children}
+            <ToastContainer theme="dark" />
+            <Loader />
+          </GlobalWebSocketProvider>
         </Provider>
       </body>
     </html>

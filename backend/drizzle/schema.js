@@ -31,6 +31,7 @@ const task_history = pgTable("task_history", {
   change_type: varchar("change_type", { length: 50 }).notNull(),
   previous_value: jsonb("previous_value"),
   new_value: jsonb("new_value"),
+  notification: text("notification"),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
 });
 

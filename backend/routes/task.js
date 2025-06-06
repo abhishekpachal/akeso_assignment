@@ -2,11 +2,22 @@ const express = require("express");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
-const { eq, and, or, gte, lte, desc, inArray, asc } = require("drizzle-orm");
+const {
+  eq,
+  and,
+  or,
+  gte,
+  lte,
+  desc,
+  inArray,
+  asc,
+  sql,
+} = require("drizzle-orm");
 const { db } = require("../drizzle/db");
 const { task_history, tasks, users } = require("../drizzle/schema");
 const { route } = require("./auth");
 const { alias } = require("drizzle-orm/gel-core");
+const { sendMessage } = require("../kafkaws/producer");
 
 router.post("/create", authMiddleware, async (req, res) => {
   try {
@@ -14,6 +25,7 @@ router.post("/create", authMiddleware, async (req, res) => {
     const { title, description, priority, status, assigned_to, due_date } =
       req.body;
     const user_id = user.userId;
+    const user_name = user.name;
     if (
       !title ||
       !description ||
@@ -25,6 +37,7 @@ router.post("/create", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
     const dueDate = new Date(due_date);
+    const notification = `${user_name} assigned you a task`;
     db.transaction(async (tx) => {
       const [result] = await tx
         .insert(tasks)
@@ -40,10 +53,12 @@ router.post("/create", authMiddleware, async (req, res) => {
         .returning({ id: tasks.id });
 
       const taskId = result.id;
+
       await tx.insert(task_history).values({
         task_id: taskId,
         change_type: "created",
         previous_value: null,
+        notification: notification,
         new_value: {
           title,
           description,
@@ -56,11 +71,20 @@ router.post("/create", authMiddleware, async (req, res) => {
       });
       return taskId;
     })
-      .then((taskId) => {
+      .then(async (taskId) => {
         res.status(200).json({
           success: true,
           taskId: taskId,
           message: "Task created successfully",
+        });
+        await sendMessage("task-updates", {
+          userId: assigned_to,
+          payload: {
+            event: "task_add",
+            title: `NEW TASK : ${title}`,
+            description: notification,
+            data: { taskId },
+          },
         });
       })
       .catch((error) => {
@@ -79,6 +103,7 @@ router.post("/update", authMiddleware, async (req, res) => {
   try {
     const user = req.user;
     const user_id = user.userId;
+    const user_name = user.name;
     var { taskId, key, value } = req.body;
 
     const keySet = ["title", "description", "priority", "status", "due_date"];
@@ -102,6 +127,11 @@ router.post("/update", authMiddleware, async (req, res) => {
         .status(404)
         .json({ message: "Task not found or does not belong to the user" });
     }
+    var keyName = key;
+    if (key === "due_date") {
+      keyName = "due date";
+    }
+    const notification = `${user_name} updated ${keyName}`;
     db.transaction(async (tx) => {
       await tx
         .update(tasks)
@@ -111,6 +141,7 @@ router.post("/update", authMiddleware, async (req, res) => {
       await tx.insert(task_history).values({
         task_id: taskId,
         change_type: key,
+        notification: notification,
         previous_value: task[0],
         new_value: {
           ...task[0],
@@ -118,11 +149,21 @@ router.post("/update", authMiddleware, async (req, res) => {
         },
       });
     })
-      .then(() => {
+      .then(async () => {
         res.json({
           success: true,
           key: key,
           message: "Task updated successfully",
+        });
+
+        await sendMessage("task-updates", {
+          userId: task[0].assigned_to,
+          payload: {
+            event: "task_update",
+            title: `UPDATE : ${task[0].title}`,
+            description: notification,
+            data: { taskId, key, value },
+          },
         });
       })
       .catch((error) => {
@@ -316,6 +357,7 @@ router.get("/details/:taskId", authMiddleware, async (req, res) => {
 router.post("/delete", authMiddleware, async (req, res) => {
   const user = req.user;
   const userId = user.userId;
+  const user_name = user.name;
   const { taskId } = req.body;
 
   if (!taskId) {
@@ -334,7 +376,7 @@ router.post("/delete", authMiddleware, async (req, res) => {
         .status(400)
         .json({ message: "Task not found or does not belong to the user" });
     }
-
+    const notification = `${user_name} removed task`;
     await db.transaction(async (tx) => {
       await tx
         .update(tasks)
@@ -345,15 +387,85 @@ router.post("/delete", authMiddleware, async (req, res) => {
       await tx.insert(task_history).values({
         task_id: taskId,
         change_type: "deleted",
+        notification: notification,
         previous_value: task[0],
         new_value: null,
       });
     });
 
+    await sendMessage("task-updates", {
+      userId: task[0].assigned_to,
+      payload: {
+        event: "task_delete",
+        title: `REMOVED : ${task.title}`,
+        description: notification,
+        data: { taskId },
+      },
+    });
     res.json({ success: true, message: "Task deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Error deleting task" });
+  }
+});
+
+router.get("/notifications", authMiddleware, async (req, res) => {
+  const user = req.user;
+  const userId = user.userId;
+
+  try {
+    const result = await db
+      .select()
+      .from(task_history)
+      .where(
+        or(
+          sql`${task_history.previous_value}->>'assigned_to' = ${userId}`,
+          sql`${task_history.new_value}->>'assigned_to' = ${userId}`
+        )
+      )
+      .orderBy(desc(task_history.timestamp))
+      .limit(50);
+    const processed = result.map((row) => {
+      const changeType = row.change_type;
+      const prev = row.previous_value || {};
+      const curr = row.new_value || {};
+
+      // Map event field based on change_type
+      let event;
+      if (changeType === "created") {
+        event = "task_add";
+      } else if (changeType === "deleted") {
+        event = "task_delete";
+      } else {
+        event = "task_update";
+      }
+
+      // Build title with prefix
+      let title = null;
+      if (changeType === "deleted") {
+        title = prev.title || curr.title || null;
+        title = title ? `REMOVED : ${title}` : "REMOVED";
+      } else if (changeType === "created") {
+        title = prev.title || curr.title || null;
+        title = title ? `NEW TASK : ${title}` : "NEW TASK";
+      } else {
+        title = prev.title || curr.title || null;
+        title = title ? `UPDATE : ${title}` : "UPDATE";
+      }
+
+      return {
+        event, // new event field
+        changeType, // original change_type (optional if needed)
+        title,
+        description: row.notification,
+        taskId: row.task_id,
+      };
+    });
+
+    res.json({ success: true, notifications: processed });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching notifications" });
   }
 });
 

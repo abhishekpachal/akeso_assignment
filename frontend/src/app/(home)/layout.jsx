@@ -17,7 +17,15 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUserFromStorage, logout } from "@/features/authSlice";
-import { PowerIcon } from "lucide-react";
+import {
+  BellIcon,
+  ClipboardCheckIcon,
+  ClipboardEditIcon,
+  MenuIcon,
+  PowerIcon,
+  SquarePenIcon,
+  WorkflowIcon,
+} from "lucide-react";
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
@@ -48,19 +56,38 @@ export default function DashboardLayout({ children }) {
     { href: "/dashboard", label: "My Tasks" },
     { href: "/assigned", label: "Received Tasks" },
     { href: "/create", label: "Create Task" },
+    { href: "/notifications", label: "Notifications" },
   ];
 
+  const getIcon = (link) => {
+    var icon = <MenuIcon className="h-5 w-5" />;
+    switch (link) {
+      case "/dashboard":
+        icon = <ClipboardEditIcon className="h-5 w-5" />;
+        break;
+      case "/assigned":
+        icon = <ClipboardCheckIcon className="h-5 w-5" />;
+        break;
+      case "/create":
+        icon = <SquarePenIcon className="h-5 w-5" />;
+        break;
+      case "/notifications":
+        icon = <BellIcon className="h-5 w-5" />;
+        break;
+    }
+    return icon;
+  };
   const SidebarContent = () => (
-    <nav className="flex flex-col flex-1 p-6 space-y-2">
+    <nav className="flex flex-col flex-1 px-2 py-6 space-y-2">
       {navLinks.map(({ href, label }) => (
         <Link
           key={href}
           href={href}
-          className={`block rounded-md px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors ${
+          className={`flex gap-2 items-center block rounded-md px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors ${
             pathname === href ? "bg-gray-700 text-white" : "text-gray-300"
           }`}
         >
-          {label}
+          {getIcon(href)} {label}
         </Link>
       ))}
       {user && (
