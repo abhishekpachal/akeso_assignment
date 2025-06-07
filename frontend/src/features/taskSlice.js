@@ -76,11 +76,27 @@ export const deleteTask = createAsyncThunk(
   }
 );
 
+export const fetchNotifications = createAsyncThunk(
+  "task/notifications",
+  async (thunkAPI) => {
+    try {
+      const response = await apiService.get("/task/notifications");
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message || "Failed to fetch notifications");
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const taskSlice = createSlice({
   name: "task",
   initialState: {
     myTasks: [],
     assignedTasks: [],
+    notifications: [],
     loading: false,
     error: null,
   },
@@ -141,6 +157,18 @@ const taskSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchNotifications.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchNotifications.fulfilled, (state, action) => {
+        state.loading = false;
+        state.notifications = action.payload.notifications;
+      })
+      .addCase(fetchNotifications.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

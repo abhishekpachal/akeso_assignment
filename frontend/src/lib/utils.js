@@ -13,6 +13,17 @@ export function formatDate(date) {
   });
 }
 
+export function formatDateTime(date) {
+  return new Date(date).toLocaleTimeString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 export function formatDateApi(date, start, end) {
   const pad = (n) => String(n).padStart(2, "0");
 

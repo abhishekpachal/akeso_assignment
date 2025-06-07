@@ -25,6 +25,8 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
+console.time("Kafka startup");
+
 (async () => {
   await connectProducer();
   await startConsumer((msg) => {
@@ -32,7 +34,8 @@ const PORT = process.env.PORT || 5000;
     sendToUser(userId, payload);
   });
 
-  server.listen(process.env.PORT, () => {
-    console.log("Server listening on port " + process.env.PORT);
+  server.listen(PORT, () => {
+    console.timeEnd("Kafka startup");
+    console.log(`Server listening on port ${PORT}`);
   });
 })();

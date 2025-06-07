@@ -397,7 +397,7 @@ router.post("/delete", authMiddleware, async (req, res) => {
       userId: task[0].assigned_to,
       payload: {
         event: "task_delete",
-        title: `REMOVED : ${task.title}`,
+        title: `REMOVED : ${task[0].title}`,
         description: notification,
         data: { taskId },
       },
@@ -454,11 +454,13 @@ router.get("/notifications", authMiddleware, async (req, res) => {
       }
 
       return {
-        event, // new event field
-        changeType, // original change_type (optional if needed)
+        id: row.id,
+        event,
+        changeType,
         title,
         description: row.notification,
         taskId: row.task_id,
+        timestamp: row.timestamp,
       };
     });
 

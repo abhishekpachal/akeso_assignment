@@ -1,20 +1,23 @@
 "use client";
 
+import { fetchNotifications } from "@/features/taskSlice";
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Toaster, toast } from "sonner";
 
-const NOTIFICATION_DURATION=5000
+const NOTIFICATION_DURATION = 5000;
 export function GlobalWebSocketProvider({ children }) {
+  const dispatch = useDispatch();
   useEffect(() => {
     const socket = new WebSocket(process.env.NEXT_PUBLIC_SOCKET_BASE_URL);
 
     socket.onopen = () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            const userId = jwtDecode(token).userId;
-            socket.send(JSON.stringify({ type: "auth", userId }));
-        }
+      const token = localStorage.getItem("token");
+      if (token) {
+        const userId = jwtDecode(token).userId;
+        socket.send(JSON.stringify({ type: "auth", userId }));
+      }
     };
 
     socket.onmessage = (event) => {
@@ -26,7 +29,7 @@ export function GlobalWebSocketProvider({ children }) {
         const data = payload.data;
         console.log("WebSocket message received:", eventName, payload);
         if (eventName === "task_update") {
-          toast.success(title, {
+          toast.info(title, {
             description: description,
             duration: NOTIFICATION_DURATION,
             action: {
@@ -36,6 +39,7 @@ export function GlobalWebSocketProvider({ children }) {
               },
             },
           });
+          dispatch(fetchNotifications());
         } else if (eventName === "task_add") {
           toast.success(title, {
             description: description,
@@ -47,8 +51,9 @@ export function GlobalWebSocketProvider({ children }) {
               },
             },
           });
+          dispatch(fetchNotifications());
         } else if (eventName === "task_delete") {
-          const id = toast.success(title, {
+          const id = toast.error(title, {
             description: description,
             duration: NOTIFICATION_DURATION,
             action: {
@@ -58,6 +63,7 @@ export function GlobalWebSocketProvider({ children }) {
               },
             },
           });
+          dispatch(fetchNotifications());
         }
       } catch (e) {
         console.error("WebSocket error:", e);
