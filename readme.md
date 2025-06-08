@@ -1,7 +1,7 @@
 Clone the repository
 
 Front end codes are inside frontend folder
-Backend codes are inside backend folder
+and server codes are inside backend folder
 
 The follow the steps to run the project
 
@@ -10,7 +10,7 @@ Then run
 
 	`docker compose up --build`
 
-It will start pulling images and then build the systems
+It will start pulling images and then build the system
 
 To run on detached mode after building run
 
@@ -51,6 +51,7 @@ This will show response like "Welcome to the Task Management API"
 
 **DB INDEXING (Optional)**
 
+```
 Create index as follows for better  data retrieval
 
 CREATE UNIQUE INDEX idx_users_email ON users (email);
@@ -69,7 +70,15 @@ ON tasks (
 
 CREATE INDEX idx_tasks_id_user_id ON tasks (id, user_id);
 
+CREATE INDEX idx_task_history_prev_assigned_to
+ON task_history ((previous_value ->> 'assigned_to'));
 
+CREATE INDEX idx_task_history_new_assigned_to
+ON task_history ((new_value ->> 'assigned_to'));
+
+CREATE INDEX idx_task_history_timestamp_desc
+ON task_history (timestamp DESC);
+```
 
 ---------------------------------------
 
