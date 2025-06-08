@@ -1,0 +1,1791 @@
+{
+	"info": {
+		"_postman_id": "c61d5ce5-30a6-4d67-b747-a731f7f13fe7",
+		"name": "Akeso API",
+		"description": "This documentation presesnts API documentation for AKESO assignement task application node.js server.\n\nOnce server set up is done, We can run this collection for fetching the APIs. access_token is required in header as Bearer auth token for JWT authentication.\n\nTo initialize access_token in collection variable please run **Sign Up API** followed by **Sign In API** and it will set value for the bearer token globally in the collection in the collection itself which will help calling other APIs.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "142619"
+	},
+	"item": [
+		{
+			"name": "Sign Up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"abhishekp81@gmail.com\",\n    \"name\": \"Abhishek Pax\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				},
+				"description": "## Sign Up Endpoint\n\nThis endpoint is used to register a new user in the system. It accepts user details such as email, name, and password, and upon successful registration, it returns a success message.\n\n### Request\n\n**Method:** POST  \n**URL:** `http://localhost:5000/api/auth/signup`\n\n**Request Body:**  \nThe request body must be in JSON format and include the following parameters:\n\n- `email` (string): The email address of the user. This will be used for authentication and notifications.\n    \n- `name` (string): The full name of the user.\n    \n- `password` (string): The password chosen by the user for account security.\n    \n\n**Example Request Body:**\n\n``` json\n{\n  \"email\": \"user@example.com\",\n  \"name\": \"User Name\",\n  \"password\": \"userpassword\"\n}\n\n ```\n\n### Response\n\nOn a successful registration, the API responds with a JSON object containing:\n\n- `success` (boolean): Indicates whether the registration was successful.\n    \n- `message` (string): A message providing additional context about the registration status.\n    \n\n**Example Response:**\n\n``` json\n{\n  \"success\": true,\n  \"message\": \"\"\n}\n\n ```\n\n### Related Responses\n\nThis endpoint is part of a broader API that may return similar structured responses for other operations, such as user authentication and data retrieval, which include a `success` field and relevant data objects.\n\n### Status Codes\n\n- **200 OK**: Indicates that the request was successful and the user has been registered."
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"abhishek.pachal@gmail.com\",\n    \"name\": \"Abhishek Pax\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"34-r8rC7hGQkPnFi+G6uyB6aFvfe/I\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 03 Jun 2025 14:03:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Registration successful\"\n}"
+				},
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"abhishek.pachal@gmail.com\",\n    \"name\": \"Abhishek Pax\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "49"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"31-WKEMg8zALB1Ko0WjUHi/6RBGHVc\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 03 Jun 2025 14:04:38 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"User already exists\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Sign In",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assuming the token is in the response body as a JSON object",
+							"pm.collectionVariables.set(\"access_token\", pm.response.json().token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"abhishek.pachal@gmail.com\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"abhishek.pachal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "45"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2d-/ZATtZqFFWx33Yq1D/fzEXlea5A\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 03 Jun 2025 15:09:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Email not found\"\n}"
+				},
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"abhishek.pachal@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "197"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c5-tsSSbrKjZ6h8dcjDAY1Cds63UfE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 03 Jun 2025 15:12:12 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTc0ODk2MzUzMiwiZXhwIjoxNzQ4OTYzNTkyfQ.Ufxo8Dv7hZCYLlrMNqlAvUa1gfMPcWeDA6TDMA-d1v0\",\n    \"user\": {\n        \"name\": \"Abhishek Pax\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "User List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"abhishek.pachal@gmail.com\",\n    \"password\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"users"
+					]
+				},
+				"description": "## API Endpoint: Get Users\n\nThis endpoint retrieves a list of users from the authentication service. It requires the user to provide their email and password to access the user data.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `http://localhost:5000/api/auth/users`\n    \n\n### Request Body\n\nThe request body must be sent in JSON format and should include the following parameters:\n\n- **email** (string): The email address of the user attempting to authenticate.\n    \n- **password** (string): The password associated with the user's email.\n    \n\n#### Example Request Body\n\n``` json\n{\n  \"email\": \"user@example.com\",\n  \"password\": \"your_password\"\n}\n\n ```\n\n### Response\n\nUpon a successful request, the API responds with a JSON object containing the following structure:\n\n- **success** (boolean): Indicates whether the request was successful.\n    \n- **users** (array): An array of user objects, where each user object contains:\n    \n    - **id** (integer): The unique identifier for the user.\n        \n    - **name** (string): The name of the user.\n        \n\n#### Example Response\n\n``` json\n{\n  \"success\": true,\n  \"users\": [\n    {\n      \"id\": 0,\n      \"name\": \"\"\n    }\n  ]\n}\n\n ```\n\n### Status Codes\n\n- **200 OK**: The request was successful, and the user data is returned.\n    \n\nThis endpoint is essential for retrieving user information after authentication and can be used in conjunction with other endpoints that manage user-related tasks and data."
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"abhishek.pachal@gmail.com\",\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "57"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"39-c7EYVyvMzjqNg2Y4fMCxyeuqP4g\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 05:38:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"users\": [\n        {\n            \"id\": 1,\n            \"name\": \"Abhishek Pax\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Create social media post evey evening\",\n    \"description\": \"Check on youtube, facebook whats happening in the word and then create at least 10 posts a day\",\n    \"priority\":\"high\",\n    \"status\":\"todo\",\n    \"assigned_to\":2,\n    \"due_date\":\"2025-06-15 15:50:15\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/task/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"task",
+						"create"
+					]
+				},
+				"description": "## Create Task API\n\nThis endpoint allows users to create a new task in the task management system. By sending a POST request to `/api/task/create`, users can specify the details of the task they wish to create.\n\n### Request Body\n\nThe request must include a JSON object with the following parameters:\n\n- **title** (string): The title of the task.\n    \n- **description** (string): A detailed description of the task.\n    \n- **priority** (string): The priority level of the task (e.g., low, medium, high).\n    \n- **status** (string): The current status of the task (e.g., todo, in_progress, done).\n    \n- **assigned_to** (integer): The ID of the user to whom the task is assigned.\n    \n- **due_date** (string): The due date for the task in the format `YYYY-MM-DD HH:MM:SS`.\n    \n\n### Response Structure\n\nUpon successful creation of a task, the API responds with a JSON object containing:\n\n- **success** (boolean): Indicates whether the task was created successfully.\n    \n- **taskId** (integer): The ID of the newly created task.\n    \n- **message** (string): A message providing additional information about the request (usually empty on success).\n    \n\n### Example Response\n\n``` json\n{\n  \"success\": true,\n  \"taskId\": 1,\n  \"message\": \"\"\n}\n\n ```\n\nThis endpoint is essential for users looking to manage their tasks effectively by adding new entries to their task list."
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"My Morning Task 2\",\n    \"description\": \"Everybody follow my works\",\n    \"priority\":\"low\",\n    \"status\":\"todo\",\n    \"assigned_to\":2,\n    \"due_date\":\"2025-06-30 12:20:15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"create"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "65"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"41-w4O4Zbql2SuGFTQdasoG4HY7kF0\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:12:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"taskId\": 3,\n    \"message\": \"Task created successfully\"\n}"
+				},
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"My Morning Task 2\",\n    \"description\": \"Everybody follow my works\",\n    \"priority\":\"low\",\n    \"status\":\"todo\",\n    \"due_date\":\"2025-06-30 12:20:15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"create"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "37"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"25-f/icTtMnVNJicVy/z/NFU3YsKDM\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:12:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"All fields are required\"\n}"
+				}
+			]
+		},
+		{
+			"name": "My Tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"filterPriority\":[\"low\",\"medium\",\"high\"],\n    \"filterStatus\":[\"todo\",\"in_progress\",\"done\"],\n    \"filterDueDateStart\":\"2025-06-01\",\n    \"filterDueDateEnd\":\"2025-06-31\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/task/mytasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"task",
+						"mytasks"
+					]
+				},
+				"description": "## API Endpoint: Retrieve User Tasks\n\nThis endpoint allows users to retrieve their tasks based on specific filter criteria such as priority, status, and due date.\n\n### Request\n\n- **Method:** POST\n    \n- **URL:** `http://localhost:5000/api/task/mytasks`\n    \n\n#### Request Body\n\nThe request body should be in JSON format and includes the following parameters:\n\n- `filterPriority` (Array of strings): Specifies the priority levels of tasks to filter. Example values include \"low\", \"medium\", \"high\".\n    \n- `filterStatus` (Array of strings): Indicates the status of tasks to filter. Common statuses are \"todo\", \"in_progress\", and \"done\".\n    \n- `filterDueDateStart` (String): The starting date for filtering tasks based on their due date. Format should be `YYYY-MM-DD`.\n    \n- `filterDueDateEnd` (String): The ending date for filtering tasks based on their due date. Format should be `YYYY-MM-DD`.\n    \n\n**Example Request Body:**\n\n``` json\n{\n  \"filterPriority\": [\"low\"],\n  \"filterStatus\": [\"todo\"],\n  \"filterDueDateStart\": \"2025-06-01\",\n  \"filterDueDateEnd\": \"2025-06-31\"\n}\n\n ```\n\n### Response\n\nOn a successful request, the API will return a JSON response with the following structure:\n\n- `success` (Boolean): Indicates whether the request was successful or not.\n    \n- `tasks` (Array of Objects): A list of task objects that match the filter criteria. Each task object contains:\n    \n    - `id` (Integer): Unique identifier for the task.\n        \n    - `title` (String): The title of the task.\n        \n    - `description` (String): A brief description of the task.\n        \n    - `priority` (String): The priority level of the task.\n        \n    - `status` (String): The current status of the task.\n        \n    - `due_date` (String): The due date of the task.\n        \n    - `created_at` (String): Timestamp of when the task was created.\n        \n    - `created_by` (String): name of the user who created the task.\n        \n    - `assigned_user` (String): name of the user to whom the task is assigned.\n        \n\n**Example Response:**\n\n``` json\n{\n  \"success\": true,\n  \"tasks\": [\n    {\n      \"id\": 0,\n      \"title\": \"\",\n      \"description\": \"\",\n      \"priority\": \"\",\n      \"status\": \"\",\n      \"due_date\": \"\",\n      \"created_at\": \"\",\n      \"created_by\": \"\",\n      \"assigned_user\": \"\"\n    }\n  ]\n}\n\n ```\n\n### Notes\n\n- Ensure that the date format is correct to avoid filtering errors.\n    \n- The response will always return a `200` status code on success, even if no tasks match the criteria.\n    \n- This endpoint is useful for users looking to manage their tasks effectively by filtering based on specific attributes."
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filterPriority\":[\"low\",\"medium\",\"high\"],\n    \"filterStatus\":[\"todo\",\"in_progress\",\"done\"],\n    \"filterDueDateStart\":\"2025-06-01\",\n    \"filterDueDateEnd\":\"2025-06-31\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/mytasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"mytasks"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "272"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"110-3KYIEsVHkPy67PiuZigrAHWJ7Gc\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Jun 2025 13:42:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"tasks\": [\n        {\n            \"id\": 1,\n            \"title\": \"My Morning Task\",\n            \"description\": \"Everybody follow my works\",\n            \"priority\": \"low\",\n            \"status\": \"todo\",\n            \"due_date\": \"2025-06-11T12:20:15.000Z\",\n            \"created_at\": \"2025-06-05T10:37:22.774Z\",\n            \"created_by\": \"Shreyas Iyer\",\n            \"assigned_user\": \"Virat Kohli\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Assigned Tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"filterPriority\":[\"low\",\"medium\",\"high\"],\n    \"filterStatus\":[\"todo\",\"in_progress\",\"done\"],\n    \"filterDueDateStart\":\"2025-06-01\",\n    \"filterDueDateEnd\":\"2025-06-31\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/task/assigned",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"task",
+						"assigned"
+					]
+				},
+				"description": "## Endpoint Description\n\nThis endpoint allows users to retrieve a list of tasks that are assigned to the authenticated user based on specific filters. It is particularly useful for managing tasks by priority, status, and due dates.\n\n### Purpose\n\nThe purpose of this request is to filter and obtain tasks assigned to the user, enabling better task management and organization. Users can specify criteria such as priority levels, current statuses, and due date ranges to refine their task list.\n\n### Request Format\n\n- **Method:** POST\n    \n- **URL:** `http://localhost:5000/api/task/assigned`\n    \n\n### Request Body\n\nThe request body should be sent in JSON format and include the following parameters:\n\n- **filterPriority** (array of strings): The priority levels of the tasks to filter by (e.g., \"low\", \"medium\", \"high\").\n    \n- **filterStatus** (array of strings): The current statuses of the tasks to filter by (e.g., \"todo\", \"in_progress\", \"done\").\n    \n- **filterDueDateStart** (string): The start date for filtering tasks based on their due date (format: YYYY-MM-DD).\n    \n- **filterDueDateEnd** (string): The end date for filtering tasks based on their due date (format: YYYY-MM-DD).\n    \n\n**All fields are optional.**\n\nExample of a request body:\n\n``` json\n{\n  \"filterPriority\": [\"low\"],\n  \"filterStatus\": [\"todo\"],\n  \"filterDueDateStart\": \"2025-06-01\",\n  \"filterDueDateEnd\": \"2025-06-31\"\n}\n\n ```\n\n### Response Format\n\nOn a successful request, the response will return a JSON object with the following structure:\n\n``` json\n{\n  \"success\": true,\n  \"tasks\": [\n    {\n      \"id\": 0,\n      \"title\": \"\",\n      \"description\": \"\",\n      \"priority\": \"\",\n      \"status\": \"\",\n      \"due_date\": \"\",\n      \"created_at\": \"\",\n      \"created_by\": \"\",\n      \"assigned_user\": \"\"\n    }\n  ]\n}\n\n ```\n\n- **success**: A boolean indicating whether the request was successful.\n    \n- **tasks**: An array of task objects, where each task contains:\n    \n    - **id**: The unique identifier for the task.\n        \n    - **title**: The title of the task.\n        \n    - **description**: A brief description of the task.\n        \n    - **priority**: The priority level of the task.\n        \n    - **status**: The current status of the task.\n        \n    - **due_date**: The due date for the task.\n        \n    - **created_at**: The timestamp when the task was created.\n        \n    - **created_by**: The name of the user who created the task.\n        \n    - **assigned_user**: The name of the user to whom the task is assigned.\n        \n\n### Status Codes\n\n- **200 OK**: The request was successful, and the tasks are returned as expected."
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filterPriority\":[\"low\",\"medium\",\"high\"],\n    \"filterStatus\":[\"todo\",\"in_progress\",\"done\"],\n    \"filterDueDateStart\":\"2025-06-01\",\n    \"filterDueDateEnd\":\"2025-06-31\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/assigned",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"assigned"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "272"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"110-3KYIEsVHkPy67PiuZigrAHWJ7Gc\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Jun 2025 13:40:51 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"tasks\": [\n        {\n            \"id\": 1,\n            \"title\": \"My Morning Task\",\n            \"description\": \"Everybody follow my works\",\n            \"priority\": \"low\",\n            \"status\": \"todo\",\n            \"due_date\": \"2025-06-11T12:20:15.000Z\",\n            \"created_at\": \"2025-06-05T10:37:22.774Z\",\n            \"created_by\": \"Shreyas Iyer\",\n            \"assigned_user\": \"Virat Kohli\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskId\":1,\n    \"key\": \"title\",\n    \"value\": \"My Job Data\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/task/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"task",
+						"update"
+					]
+				},
+				"description": "## Update Task\n\nThis endpoint allows you to update the details of a specific task identified by its `taskId`. You can modify various attributes of the task using this API.\n\n### Request\n\n- **Method**: POST\n    \n- **URL**: `http://localhost:5000/api/task/update`\n    \n- **Request Body** (JSON):\n    \n    - `taskId` (integer): The unique identifier of the task you want to update.\n        \n    - `key` (string): The attribute of the task that you wish to update (e.g., title, description).\n        \n    - `value` (string): The new value for the specified attribute.\n        \n\n#### Example Request Body:\n\n``` json\n{\n  \"taskId\": 6,\n  \"key\": \"title\",\n  \"value\": \"My Job 6\"\n}\n\n ```\n\n### Response\n\nThe response will return a JSON object indicating the success of the operation.\n\n- **Response Body**:\n    \n    - `success` (boolean): Indicates whether the update was successful.\n        \n    - key (string): Indicates which field was updated\n        \n    - `message` (string): A message providing additional context about the operation (may be empty).\n        \n\n#### Example Response:\n\n``` json\n{\n  \"success\": true,\n  \"message\": \"\"\n}\n\n ```\n\n### Notes\n\n- Ensure that the `taskId` corresponds to an existing task in the system.\n    \n- The `key` parameter must be a valid attribute of the task that can be updated.\n    \n- A successful response will always return a `200` status code.\n    \n- Other related endpoints in this API also return similar success indicators and structures, which can be useful for understanding the overall API behavior."
+			},
+			"response": [
+				{
+					"name": "200 Due Date",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":3,\n    \"key\": \"due_date\",\n    \"value\": \"2025-06-30 12:20:15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"update"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-fdidsBOO1qHgJoh8JsDql/I72r4\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:47:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"key\":\"due_date\",\n    \"message\": \"Task updated successfully\"\n}"
+				},
+				{
+					"name": "200 Title",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":3,\n    \"key\": \"title\",\n    \"value\": \"My Task 3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"update"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-fdidsBOO1qHgJoh8JsDql/I72r4\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:49:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"key\":\"title\",\n    \"message\": \"Task updated successfully\"\n}"
+				},
+				{
+					"name": "200 Description",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":3,\n    \"key\": \"description\",\n    \"value\": \"Task description 3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"update"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-fdidsBOO1qHgJoh8JsDql/I72r4\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:49:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"key\":\"description\",\n    \"message\": \"Task updated successfully\"\n}"
+				},
+				{
+					"name": "200 Priority",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":3,\n    \"key\": \"priority\",\n    \"value\": \"high\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"update"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-fdidsBOO1qHgJoh8JsDql/I72r4\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:54:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"key\":\"priority\",\n    \"message\": \"Task updated successfully\"\n}"
+				},
+				{
+					"name": "200 Status",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":3,\n    \"key\": \"status\",\n    \"value\": \"in_progress\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"update"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-fdidsBOO1qHgJoh8JsDql/I72r4\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:56:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"key\":\"status\",\n    \"message\": \"Task updated successfully\"\n}"
+				},
+				{
+					"name": "400 Key missing",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":3,\n    \"key\": \"\",\n    \"value\": \"in_progress\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"update"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "29"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1d-WOfdxRb0kq07a3iptVFw02HU+BE\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 06:57:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Invalid request\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Task Details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/task/details/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"task",
+						"details",
+						"1"
+					]
+				},
+				"description": "## Get Task Details\n\nThis endpoint retrieves the details of a specific task identified by its unique ID. The task information includes various attributes such as title, description, priority, status, due date, creation date, creator, assigned user, and edit permissions.\n\n### Request\n\n- **Method:** GET\n    \n- **URL:** `http://localhost:5000/api/task/details/{id}`\n    \n- **Path Parameter:**\n    \n    - `id` (integer): The unique identifier of the task for which details are being requested.\n        \n\n### Response\n\nUpon a successful request, the API will return a JSON object with the following structure:\n\n- **success** (boolean): Indicates whether the request was successful.\n    \n- **task** (object): Contains the details of the requested task, with the following fields:\n    \n    - `id` (integer): The unique identifier of the task.\n        \n    - `title` (string): The title of the task.\n        \n    - `description` (string): A detailed description of the task.\n        \n    - `priority` (string): The priority level of the task.\n        \n    - `status` (string): The current status of the task.\n        \n    - `due_date` (string): The due date for the task (format may vary).\n        \n    - `created_at` (string): The timestamp when the task was created.\n        \n    - `created_by` (string): The name of the user who created the task.\n        \n    - `assigned_user` (string): The name of the user to whom the task is assigned.\n        \n    - `can_edit` (boolean): Indicates whether the task can be edited by the user.\n        \n\n### Notes\n\n- A successful response will return a `200` status code.\n    \n- Ensure that the task ID provided in the request path is valid to retrieve the correct task details."
+			},
+			"response": [
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/task/details/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"details",
+								"9999"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "28"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1c-MHDSHEeakQ3QeijgQMEHeol2HWg\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 07:25:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Task not found\"\n}"
+				},
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/task/details/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"details",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "285"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"11d-yki8a0svV1B+wHOfJNTEMnmeCvM\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Jun 2025 09:17:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"task\": {\n        \"id\": 1,\n        \"title\": \"My Morning Task\",\n        \"description\": \"Everybody follow my works\",\n        \"priority\": \"low\",\n        \"status\": \"todo\",\n        \"due_date\": \"2025-06-11T12:20:15.000Z\",\n        \"created_at\": \"2025-06-05T10:37:22.774Z\",\n        \"created_by\": \"Shreyas Iyer\",\n        \"assigned_user\": \"Virat Kohli\",\n        \"can_edit\": true\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskId\":6\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/task/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"task",
+						"delete"
+					]
+				},
+				"description": "## Delete Task Endpoint\n\nThis endpoint allows the user to delete a specific task from the task management system. The task to be deleted is identified by its unique `taskId`.\n\n### Request\n\n- **Method**: POST\n    \n- **URL**: `http://localhost:5000/api/task/delete`\n    \n- **Request Body**: The request must include a JSON object with the following parameter:\n    \n    - `taskId` (integer, required): The unique identifier of the task that you wish to delete.\n        \n\n**Example Request Body**:\n\n``` json\n{\n  \"taskId\": 6\n}\n\n ```\n\n### Response\n\nUpon successful deletion of the task, the API will respond with a JSON object indicating the success of the operation. The structure of the response is as follows:\n\n- `success` (boolean): Indicates whether the deletion was successful.\n    \n- `message` (string): A message providing additional information about the operation (may be empty).\n    \n\n**Example Response**:\n\n``` json\n{\n  \"success\": true,\n  \"message\": \"\"\n}\n\n ```"
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":6\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"delete"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-nEz6SFM1ji4GJKYMbq77oGLxI5Y\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 07:33:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Task deleted successfully\"\n}"
+				},
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskId\":600\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/task/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"delete"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "59"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3b-CQAhi6PEcZw9QbAKn/gr3zy1IiU\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jun 2025 07:35:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Task not found or does not belong to the user\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/task/notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"task",
+						"notifications"
+					]
+				},
+				"description": "### API Endpoint: Get Notifications\n\n**Method:** GET  \n**URL:** `http://localhost:5000/api/task/notifications`\n\n#### Purpose\n\nThis endpoint retrieves a list of notifications related to tasks. Notifications may include various events and changes associated with tasks in the system.\n\n#### Request Parameters\n\nThis endpoint does not require any input parameters.\n\n#### Response Structure\n\nThe response will be in JSON format and includes the following fields:\n\n- **success** (boolean): Indicates whether the request was successful.\n    \n- **notifications** (array): An array of notification objects, each containing:\n    \n    - **event** (string): The type of event that triggered the notification.\n        \n    - **changeType** (string): The type of change that occurred.\n        \n    - **title** (string): The title of the notification.\n        \n    - **description** (string): A detailed description of the notification.\n        \n    - **taskId** (integer): The identifier of the associated task.\n        \n\n#### Example Response\n\n``` json\n{\n  \"success\": true,\n  \"notifications\": [\n    {\n      \"event\": \"\",\n      \"changeType\": \"\",\n      \"title\": \"\",\n      \"description\": \"\",\n      \"taskId\": 0\n    }\n  ]\n}\n\n ```\n\nThis structure allows clients to handle notifications effectively based on the events and changes related to tasks."
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/task/notifications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"task",
+								"notifications"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1115"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"45b-23FBmTC5Fn1S5yvSI5zNocEQdRw\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Jun 2025 14:13:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"notifications\": [\n        {\n            \"event\": \"task_delete\",\n            \"changeType\": \"deleted\",\n            \"title\": \"REMOVED : Next work\",\n            \"description\": \"Virat Kohli removed task\",\n            \"taskId\": 8\n        },\n        {\n            \"event\": \"task_delete\",\n            \"changeType\": \"deleted\",\n            \"title\": \"REMOVED : Opposite Tasks\",\n            \"description\": \"Virat Kohli removed task\",\n            \"taskId\": 6\n        },\n        {\n            \"event\": \"task_update\",\n            \"changeType\": \"priority\",\n            \"title\": \"UPDATE : Opposite Tasks\",\n            \"description\": \"Virat Kohli updated priority\",\n            \"taskId\": 6\n        },\n        {\n            \"event\": \"task_update\",\n            \"changeType\": \"status\",\n            \"title\": \"UPDATE : Opposite Tasks\",\n            \"description\": \"Virat Kohli updated status\",\n            \"taskId\": 6\n        },\n        {\n            \"event\": \"task_update\",\n            \"changeType\": \"priority\",\n            \"title\": \"UPDATE : Opposite Tasks\",\n            \"description\": \"Virat Kohli updated priority\",\n            \"taskId\": 6\n        },\n        {\n            \"event\": \"task_add\",\n            \"changeType\": \"created\",\n            \"title\": \"NEW TASK : Next work\",\n            \"description\": \"Virat Kohli assigned you a task\",\n            \"taskId\": 8\n        },\n        {\n            \"event\": \"task_add\",\n            \"changeType\": \"created\",\n            \"title\": \"NEW TASK : Task Keeper\",\n            \"description\": \"Virat Kohli assigned you a task\",\n            \"taskId\": 7\n        },\n        {\n            \"event\": \"task_update\",\n            \"changeType\": \"priority\",\n            \"title\": \"UPDATE : Opposite Tasks\",\n            \"description\": \"Virat Kohli updated priority\",\n            \"taskId\": 6\n        }\n    ]\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJBYmhpc2hlayBQYXgiLCJpYXQiOjE3NDkwMTk5NzEsImV4cCI6MTc0OTEwNjM3MX0.Gvc_kXP_2tijhdmG1sKfDkHgs2Y8jEVNZfloZ67aYso",
+			"type": "string"
+		}
+	]
+}
