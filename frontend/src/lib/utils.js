@@ -10,6 +10,7 @@ export function formatDate(date) {
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: "Asia/Kolkata",
   });
 }
 
@@ -20,6 +21,7 @@ export function formatDateTime(date) {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Asia/Kolkata",
     hour12: true,
   });
 }

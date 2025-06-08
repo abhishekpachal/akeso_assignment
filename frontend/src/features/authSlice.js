@@ -130,6 +130,7 @@ const authSlice = createSlice({
       })
       .addCase(loadUserFromStorage.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.token = action.payload.token;
       });
   },
 });

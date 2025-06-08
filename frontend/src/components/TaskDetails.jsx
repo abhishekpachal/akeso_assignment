@@ -143,19 +143,25 @@ export default function TaskDetail({ task }) {
           <div className="p-4 bg-gray-25 shadow-lg border-1 dark:bg-gray-800 rounded-lg mt-6">
             <div className="grid grid-cols-4 gap-4">
               <div className="col-span-2 md:col-span-2">
-                <h2 className="font-bold">Due date</h2>
-                <p className="flex items-center">
-                  <CalendarSyncIcon className="inline-block mr-2" />
-                  {formatDate(task.due_date)}
-                </p>
+                {task.due_date != null && (
+                  <>
+                    <h2 className="font-bold">Due date</h2>
+                    <p className="flex items-center">
+                      <CalendarSyncIcon className="inline-block mr-2" />
+                      {formatDate(task.due_date)}
+                    </p>
+                  </>
+                )}
               </div>
-              <div className="col-span-2 md:col-span-2">
-                <h2 className="font-bold">Added on</h2>
-                <p className="flex items-center">
-                  <CalendarPlusIcon className="inline-block mr-2" />
-                  {formatDate(task.created_at)}
-                </p>
-              </div>
+              {task.created_at != null && (
+                <div className="col-span-2 md:col-span-2">
+                  <h2 className="font-bold">Added on</h2>
+                  <p className="flex items-center">
+                    <CalendarPlusIcon className="inline-block mr-2" />
+                    {formatDate(task.created_at)}
+                  </p>
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-4 gap-4 mt-4">
               <div className="col-span-2 md:col-span-2">
