@@ -1,0 +1,15 @@
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+# Install next + dev tools if needed
+RUN npm install next
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]

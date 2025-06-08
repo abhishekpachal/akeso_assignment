@@ -13,8 +13,8 @@ import { hideLoader, showLoader } from "@/features/loaderSlice";
 
 export default function Home() {
   const router = useRouter();
-  const [email, setEmail] = useState("abhishek.pachal@gmail.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [userLoaded, setUserLoaded] = useState(false);
   const { user, loading, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

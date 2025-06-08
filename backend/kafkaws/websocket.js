@@ -22,6 +22,9 @@ function setupWebSocket(server) {
     });
 
     ws.on("close", () => {
+      if (ws.userId) {
+        console.log(`User ${ws.userId} disconnected`);
+      }
       if (ws.userId) userSockets.delete(ws.userId);
     });
   });

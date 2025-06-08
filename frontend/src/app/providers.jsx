@@ -2,21 +2,31 @@
 
 import { fetchNotifications } from "@/features/taskSlice";
 import { jwtDecode } from "jwt-decode";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "sonner";
 
 const NOTIFICATION_DURATION = 5000;
+const RECONNECT_INTERVAL = 3000;
 export function GlobalWebSocketProvider({ children }) {
   const dispatch = useDispatch();
-  useEffect(() => {
-    const socket = new WebSocket(process.env.NEXT_PUBLIC_SOCKET_BASE_URL);
+  const socketRef = useRef(null);
+  const reconnectTimeoutRef = useRef(null);
+  const { token } = useSelector((state) => state.auth);
 
+  const connectSocket = () => {
+    if (!token) return;
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN)
+      return;
+    const socket = new WebSocket(process.env.NEXT_PUBLIC_SOCKET_BASE_URL);
+    socketRef.current = socket;
     socket.onopen = () => {
-      const token = localStorage.getItem("token");
-      if (token) {
+      try {
         const userId = jwtDecode(token).userId;
         socket.send(JSON.stringify({ type: "auth", userId }));
+        console.log("WebSocket connected");
+      } catch (e) {
+        console.error("Failed to decode token or send auth:", e);
       }
     };
 
@@ -75,10 +85,41 @@ export function GlobalWebSocketProvider({ children }) {
       toast.error("WebSocket connection error");
     };
 
-    return () => {
-      socket.close();
+    socket.onclose = () => {
+      console.log("WebSocket closed");
+      socketRef.current = null;
+      // Try reconnect if user still logged in
+      if (token) {
+        reconnectTimeoutRef.current = setTimeout(() => {
+          connectSocket();
+        }, RECONNECT_INTERVAL);
+      } else {
+        console.log("WebSocket disconnected, no token available");
+      }
     };
-  }, []);
+  };
+
+  const disconnectSocket = () => {
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+    if (socketRef.current) {
+      socketRef.current.close();
+      socketRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    if (token !== null && token !== "") {
+      connectSocket();
+    } else {
+      disconnectSocket();
+    }
+    return () => {
+      disconnectSocket();
+    };
+  }, [token]);
 
   return (
     <>

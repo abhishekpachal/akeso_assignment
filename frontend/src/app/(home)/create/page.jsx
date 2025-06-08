@@ -13,7 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,10 +42,13 @@ export default function CreateTask() {
     (state) => state.task
   );
 
+  const initRef = useRef(false);
+
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!userList || userList.length === 0) {
+    if (!initRef.current) {
       dispatch(getUsers());
+      initRef.current = true;
     }
   }, [dispatch, userList]);
 

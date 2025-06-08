@@ -1,5 +1,8 @@
 Clone the repository
 
+Front end codes are inside frontend folder
+Backend codes are inside backend folder
+
 The follow the steps to run the project
 
 Make sure **`docker-compose.yml`** is located in the root folder
@@ -9,16 +12,28 @@ Then run
 
 It will start pulling images and then build the systems
 
+To run on detached mode after building run
+
+    `docker compose up -d'
+
+For development mode run
+
+    `docker compose -f docker-compose.dev.yml up --build` 
+
 
 ------------
 
 
 **BACKEND**
 
-Right after that use the following commands to generate and migrate postgres schema
+Configurations are written in *Dockerfile* inside backend folder. For dev mode *Docerfile.dev* is referenced in docker compose file
+
+Right after building docker compose use the following commands to generate and migrate postgres schema.
 schema is located at **`backend/drizzle/schema.js`**
 
-To generate use 
+This project is using Drizzle ORM for database connectivity
+
+To generate first move to **backend** folder and use 
 
 	`npx drizzle-kit generate`
 
@@ -55,3 +70,14 @@ ON tasks (
 CREATE INDEX idx_tasks_id_user_id ON tasks (id, user_id);
 
 
+
+---------------------------------------
+
+
+**FRONTEND**
+
+Configurations are written inside *Dockerfile* of frontend folder. For dev mode *Docerfile.dev* is referenced in docker compose file
+
+Once Docker compose is running front end will also run. It can be seen using `http://localhost:3000`
+
+If docker compose is run using `docker-compose.dev.yml` it will work as live development mode enabling fast refersh 

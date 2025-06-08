@@ -28,14 +28,19 @@ const PORT = process.env.PORT || 5000;
 console.time("Kafka startup");
 
 (async () => {
-  await connectProducer();
-  await startConsumer((msg) => {
-    const { userId, payload } = msg;
-    sendToUser(userId, payload);
-  });
+  try {
+    await connectProducer();
+    await startConsumer((msg) => {
+      const { userId, payload } = msg;
+      sendToUser(userId, payload);
+    });
 
-  server.listen(PORT, () => {
-    console.timeEnd("Kafka startup");
-    console.log(`Server listening on port ${PORT}`);
-  });
+    server.listen(PORT, () => {
+      console.timeEnd("Kafka startup");
+      console.log(`Server listening on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Startup error:", err);
+    process.exit(1);
+  }
 })();
