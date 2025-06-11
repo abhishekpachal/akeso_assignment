@@ -16,6 +16,7 @@ pnpm-debug.log*
 **/.parcel-cache
 **/coverage/
 **/tmp/
+
 *.tmp
 
 # Ignore migrations folder (Drizzle)
