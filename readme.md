@@ -8,17 +8,23 @@ The follow the steps to run the project
 Make sure **`docker-compose.yml`** is located in the root folder
 Then run
 
-	`docker compose up --build`
+```
+docker compose up --build
+```
 
 It will start pulling images and then build the system
 
 To run on detached mode after building run
 
-    `docker compose up -d'
+```
+docker compose up -d    
+```
 
 For development mode run
 
-    `docker compose -f docker-compose.dev.yml up --build` 
+```
+docker compose -f docker-compose.dev.yml up --build
+``` 
 
 
 ------------
@@ -47,7 +53,9 @@ Once generation is done use migration command as follows
 
 Once everything is done check if backend server is running by visiting the following url
 
-	`http://localhost:5000/`
+```
+http://localhost:5000/
+```
 
 This will show response like "Welcome to the Task Management API"
                                 
