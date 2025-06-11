@@ -18,4 +18,4 @@ COPY .env .env
 EXPOSE 5000
 
 # Start the Node.js server
-CMD ["node", "server.js"]
+CMD sh -c "npx drizzle-kit generate && npx drizzle-kit migrate && node server.js"

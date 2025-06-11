@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 module.exports = function (req, res, next) {
   const authHeader = req.headers["authorization"];
   // Check if the Authorization header is present
-  if (!authHeader) return res.status(401).json({ message: "Unauthorized request" });
+  if (!authHeader)
+    return res.status(401).json({ message: "Unauthorized request" });
 
   const token = authHeader.split(" ")[1];
   // Token should be in the format "Bearer <token>"

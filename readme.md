@@ -31,15 +31,19 @@ Configurations are written in *Dockerfile* inside backend folder. For dev mode *
 Right after building docker compose use the following commands to generate and migrate postgres schema.
 schema is located at **`backend/drizzle/schema.js`**
 
+Docker script will automatically generate and migrate database structures.
+
 This project is using Drizzle ORM for database connectivity
 
-To generate first move to **backend** folder and use 
+<!-- To generate first move to **backend** folder and use generation command 
 
-	`npx drizzle-kit generate`
+  ```
+  cd backend
+  ```
 
 Once generation is done use migration command as follows
 
-	`npx drizzle-kit migrate`
+	`npx drizzle-kit migrate` -->
 
 Once everything is done check if backend server is running by visiting the following url
 
@@ -90,3 +94,8 @@ Configurations are written inside *Dockerfile* of frontend folder. For dev mode 
 Once Docker compose is running front end will also run. It can be seen using `http://localhost:3000`
 
 If docker compose is run using `docker-compose.dev.yml` it will work as live development mode enabling fast refersh 
+
+Live notifications can be seen throughout the app as well as in the Notifications link.
+
+Please create two accounts and open in two different browsers or may be another incognito window to test live notifications.
+

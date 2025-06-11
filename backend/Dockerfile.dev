@@ -7,9 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Install nodemon globally (or skip if already in devDependencies)
-RUN npm install -g nodemon
-
+# Copy all files
 COPY . .
 
-CMD ["nodemon", "server.js"]
+# Run drizzle generate + migrate before dev server
+CMD sh -c "npx drizzle-kit generate && npx drizzle-kit migrate && nodemon server.js"

@@ -4,11 +4,11 @@ const config = {
   out: "./drizzle/migrations", // folder for migrations
   dialect: "postgresql",
   dbCredentials: {
-    host: "localhost",
-    port: 5433,
+    host: "postgres",
+    port: 5432,
     user: "postgres",
     password: "123456",
-      database: "tasky",
+    database: "tasky",
     ssl: false, // set to true if you want to use SSL
   },
 };
